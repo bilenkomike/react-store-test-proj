@@ -1,0 +1,10 @@
+.backdrop {
+    position: fixed;
+    top: 78px;
+    left: 0;
+    width: 100%;
+    height: calc(100% - 78px);
+    background-color: rgba(57, 55, 72, 0.22);
+    overflow: hidden;
+    z-index: 2;
+}

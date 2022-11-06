@@ -1,0 +1,7 @@
+.product__list {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;   
+    align-items: center; 
+    row-gap: 103px;
+    margin: 0 auto;
+}
