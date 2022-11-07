@@ -3,9 +3,6 @@ import {Component} from 'react';
 import classes from './CurrencyList.module.css';
 
 class CurrencyList extends Component {
-    constructor () {
-        super();
-    }
     
     render() {
         return (

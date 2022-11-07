@@ -4,12 +4,10 @@ import classes from './ProductItem.module.css';
 import cart from './images/cart.png';
 
 class ProductItem extends Component {
-    contructor() {
-        
-        this.state = {
-            disabled: false
-        };
-    }
+
+    state = {
+        disabled: false
+    };
 
 
     render() {

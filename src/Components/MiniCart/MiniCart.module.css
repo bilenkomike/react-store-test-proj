@@ -5,9 +5,10 @@
 
     background-color: #fff;
     
-    position: absolute;
+    position: fixed;
     top: 75px;
     right: 72px;
+    z-index: 4;
 }
 
 .mini__cart.active {

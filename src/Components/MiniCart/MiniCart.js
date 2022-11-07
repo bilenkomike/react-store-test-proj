@@ -3,17 +3,25 @@ import MiniCartItem from './MiniCartItem';
 
 import classes from './MiniCart.module.css';
 
+import { connect } from 'react-redux';
+import { miniCartActions } from '../../store/miniCartSlice/miniCartSlice';
+
+import { Link } from 'react-router-dom';
+
+
 class MiniCart extends Component {
     render() {
         return (
-            <div className={`${classes.mini__cart} ${this.props.active ? classes.active : ''}`}>
-                <h3>My Bag , <span className={classes.mini__cart__items__counter}>3 items</span></h3>
+            <div className={`${classes.mini__cart} ${this.props.open ? classes.active : ''}`}>
+                <h3>My Bag , <span className={classes.mini__cart__items__counter}>{this.props.count} items</span></h3>
                 <MiniCartItem />
                 <MiniCartItem />
 
                 <div className={classes.mini__cart__total}>Total: <span>$200.00</span></div>
                 <div className={classes.mini__cart__actions}>
-                    <button className={classes.mini__cart__view__btn}>View bag</button>
+                    <Link to="/cart" className={classes.mini__cart__view__btn} onClick={() => {
+                        this.props.toggleMiniCart();
+                    }}>View bag</Link>
                     <button className={classes.mini__cart__success__btn}>Check out</button>
                 </div>
             </div>
@@ -21,5 +29,17 @@ class MiniCart extends Component {
     }
 }
 
+const mapStateToProps = state => {
+    
+    return {
+        open: state.miniCart.open,
+        count: state.cart.count,
+    }
+}
+const mapDispatchToProps = dispatch => {
+    return {
+        toggleMiniCart: () => dispatch(miniCartActions.toggle()),
+    }
+};
 
-export default MiniCart;
+export default connect(mapStateToProps, mapDispatchToProps)(MiniCart);
