@@ -5,17 +5,20 @@ import classes from './ProductsList.module.css';
 
 class ProductsList extends Component {
     render() {
+        const { products } = this.props;
         return (
             <div className={classes.product__list}>
-                <ProductItem />
-                <ProductItem />
-                <ProductItem sold={true} />
-                <ProductItem />
-                <ProductItem />
-                <ProductItem />
+                {products.map(product => <ProductItem 
+                key={product.id}
+                sold={!product.inStock} 
+                image={product.gallery[0]}
+                brand={product.brand}
+                name={product.name}
+                />)}
             </div>
         );
     }
+
 }
 
 export default ProductsList;

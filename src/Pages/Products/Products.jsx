@@ -10,48 +10,53 @@ import FetchData from '../../fetchData/FetchData';
 
 
 
+
 class ProductsComponent extends PureComponent {
     state = {
         products : [],
+        loading: true,
     }
-    
-    // componentDidUpdate(prevProps, prevState) {
-    //     if((this.props.category !== prevProps.category )&& ) {
-    //         this.getProducts();
-    //     }
-    //     return false;
-    // }
-    getProducts = async() => {
 
-        if(this.state.products.length <= 0) {
-            console.log('yes');
+    getProducts = async() => {
+            this.setState(prevState => {
+                return {
+                    ...prevState,
+                    loading: true,
+                }
+            })
             const resp = await FetchData.getProducts(this.props.category);
             
-            // this.setState({products: resp});
-            console.log(resp);
-            // // this.setState(prevState => {
-            // //     return {
-            // //         products: resp
-            // //     }
-            // // });
-            // return resp;
-        }
-        else {
-            return false;
-        }
+            
+            this.setState(prevState => {
+                return {
+                    ...prevState, 
+                    products: resp,
+                    loading: false
+                }
+            });
         
     } 
+
+    componentDidMount() {
+        this.getProducts();
+    }
+
+    componentDidUpdate(prevProps) {
+        if(prevProps.category !== this.props.category) {
+            this.getProducts();
+        }
+    }
     
     
 
     render() {
-        this.getProducts();  
+          
         
         return (
             <>
             
-                <h1 className={classes.products__title}>{this.props.category}</h1>
-                <ProductsList products={this.state.products} />
+                <h1 className={classes.products__title} style={{ textTransform: 'capitalize' }}>{this.props.category}</h1>
+                {!this.state.loading && <ProductsList products={this.state.products} />}
             </>
         );
     }
@@ -61,13 +66,14 @@ class ProductsComponent extends PureComponent {
 
 function Products () {
     let params = useParams().category;
-
-    
     
     return <ProductsComponent category={params} />;
 }
 
 export default Products;
+
+
+
 
 
 

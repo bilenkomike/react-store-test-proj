@@ -17,15 +17,15 @@ class ProductItem extends Component {
                     <div className={classes.product__hover__card__text}>Out of Stock</div>
                 </div>
                 <div className={classes.product__image}>
-                    <img className={classes.product__img} src="https://via.placeholder.com/354x330" alt="" />
+                    <img className={classes.product__img} src={this.props.image} alt="" />
                     <button className={classes.product__cart__button}>
                         <img src={cart} alt="" />
                     </button>
                 </div>
                 
                 <div className={classes.product__info}>
-                    <h2 className={classes.product__title}>Apollo Running Short</h2>
-                    <div className={classes.product__value}>$50.00</div>
+                    <h2 className={classes.product__title}>{this.props.brand} {this.props.name}</h2>
+                    <div className={classes.product__value}>PRICE</div>
                 </div>
             </div>
         );
