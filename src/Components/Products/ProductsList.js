@@ -10,6 +10,7 @@ class ProductsList extends Component {
             <div className={classes.product__list}>
                 {products.map(product => <ProductItem 
                 key={product.id}
+                id={product.id}
                 sold={!product.inStock} 
                 image={product.gallery[0]}
                 brand={product.brand}

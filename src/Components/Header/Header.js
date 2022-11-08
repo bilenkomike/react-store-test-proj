@@ -28,7 +28,6 @@ class Header extends Component{
     loadLinks = async () => {
         if(this.state.links.length === 0) {
             const data = await FetchData.getLinks();
-            console.log(data);
         
             if(data.length > 0) {
             if(this.state.activeLink === '') {

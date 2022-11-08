@@ -34,16 +34,17 @@ class App extends Component{
 
     if(!this.state.isPending) {
       return (
-        <> 
+        <>
+        <MiniCart /> 
           <Header  />
           <Backdrop />
-          <MiniCart />
+          
   
           <Routes>
             <Route path="/*" element={<Navigate to={`/${this.state.def}`} />} />
             <Route path="/:category" element={<Products />} />
             <Route path="/cart" element={<Cart />} />
-            <Route path="/product" element={<Product />} />
+            <Route path="/product/:prodId" element={<Product />} />
             
           </Routes>
         </>

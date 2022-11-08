@@ -43,6 +43,26 @@ class FetchData {
 
     }
 
+    static getProduct = async (id) => {
+      const query = `
+      query{
+        product(id:"${id}") {
+                 id, name,inStock,brand, 
+                 gallery, description, category, 
+                 attributes{id,name,type,
+                   items{displayValue,value,id}},
+                 prices{currency{symbol},amount}
+               }
+             }
+       `;    
+       const data = await this.instanse.post('',{
+          query,
+      });
+      //  
+      return data.data.data.product;
+
+  }
+
 
 }
 
