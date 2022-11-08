@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-
+import { cartActions } from "../cartSlice/cartSlice";
 
 
 const currenciesSlice = createSlice({
@@ -14,9 +14,11 @@ const currenciesSlice = createSlice({
         pushCurrenciesInitial: (state,action) => {
             const curr = action.payload.curr
             state.currencies = curr;
+
             if(state.selected === null) {
                 state.selected = curr[0];
             }
+
         },
 
         toggle: state => {

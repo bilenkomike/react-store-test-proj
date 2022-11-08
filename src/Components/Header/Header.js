@@ -80,7 +80,7 @@ class Header extends Component{
                         </div>
                         <div className={classes.nav__cart} onClick={this.props.toggleMiniCart}>
                             <img src={cart} alt="" />
-                            <span className={`${classes.cart__counter} ${this.state.cartCounter > 0 ? classes.active : ''}`} >{this.state.cartCounter}</span>
+                            <span className={`${classes.cart__counter} ${this.props.totalAmount > 0 ? classes.active : ''}`} >{this.props.totalAmount}</span>
                         </div>
                     </div>
                     
@@ -95,9 +95,9 @@ class Header extends Component{
 
 
 const mapStateToProps = state => {
-    console.log(state);
     return {
         curr: state.currencies.selected,
+        totalAmount: state.cart.count,
         openCurr: state.currencies.openList
     }
 }

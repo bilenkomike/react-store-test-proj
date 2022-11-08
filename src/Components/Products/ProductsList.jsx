@@ -9,6 +9,7 @@ import classes from './ProductsList.module.css';
 class ProductsList extends Component {
     render() {
         const { products, curr } = this.props;
+        console.log(this.props);
         return (
             <div className={classes.product__list}>
                 {curr !== null && products.map(product => <ProductItem 
@@ -20,6 +21,7 @@ class ProductsList extends Component {
                 image={product.gallery[0]}
                 brand={product.brand}
                 name={product.name}
+                attributes={product.attributes}
                 />)}
             </div>
         );
@@ -30,7 +32,7 @@ class ProductsList extends Component {
 
 const mapStateToProps = state => {
     return {
-        curr: state.currencies.selected
+        curr: state.currencies.selected,
     }
 }
 

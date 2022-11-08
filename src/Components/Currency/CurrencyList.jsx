@@ -5,6 +5,7 @@ import FetchData from '../../fetchData/FetchData';
 
 import { connect } from 'react-redux';
 import { currenciesActions } from '../../store/currenciesSlice/currenciesSlice';
+import { cartActions } from '../../store/cartSlice/cartSlice';
 
 
 
@@ -25,6 +26,14 @@ class CurrencyList extends Component {
         const resp = await FetchData.getCurrencies();
         
         this.props.pushCurrencies(resp);
+        let obj = {};
+        resp.map(cur => {
+            obj[cur.symbol] = 0;
+            
+        });
+
+        this.props.setTotalDefault(obj);
+
         
         this.setState(prevState => {
             return {
@@ -68,7 +77,8 @@ const mapDispatchToProps = dispatch => {
     return {
         pushCurrencies: (curr) => dispatch(currenciesActions.pushCurrenciesInitial({curr})),
         changeCurr: (symb) => dispatch(currenciesActions.changeCurr({symb})),
-        toggle: () => dispatch(currenciesActions.toggle())
+        toggle: () => dispatch(currenciesActions.toggle()),
+        setTotalDefault: (curr) => dispatch(cartActions.setTotalDefault(curr)) 
     }
 }
 

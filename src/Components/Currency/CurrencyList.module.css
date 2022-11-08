@@ -10,7 +10,7 @@
 
     transition: opacity .2s linear;
 
-    position: absolute;
+    position: fixed;
     top: 65px;
     right: 90px;
     z-index: 4;

@@ -4,6 +4,8 @@ import classes from './ProductItem.module.css';
 import cart from './images/cart.png';
 
 import  {Link} from 'react-router-dom';
+import { connect } from 'react-redux';
+import { cartActions } from '../../store/cartSlice/cartSlice';
 
 
 
@@ -17,7 +19,7 @@ class ProductItem extends Component {
     render() {
         
         const price = this.props.prices.find(price => price.currency.symbol === this.props.currency);
-
+        // console.log(this.props);
         return (
             <div className={`${classes.product__item} ${this.props.sold ? classes.sold : ''}`} >
                 <div className={classes.product__hover__card}>
@@ -25,7 +27,11 @@ class ProductItem extends Component {
                 </div>
                 <div className={classes.product__image}>
                     <Link to={`/product/${this.props.id}`}><img className={classes.product__img} src={this.props.image} alt="" /></Link>
-                    <button className={classes.product__cart__button}>
+                    <button className={classes.product__cart__button} onClick={() => {
+                        console.log(this.props);
+                        this.props.addProduct({id:this.props.id,prices:this.props.prices,attributes: this.props.attributes});
+                        // id, prices, attributes
+                    }}>
                         <img src={cart} alt="" />
                     </button>
                 </div>
@@ -39,4 +45,19 @@ class ProductItem extends Component {
     }
 }
 
-export default ProductItem;
+const mapStateToProps = state => {
+    return {
+        
+    }
+}
+
+
+
+const mapDispatchToProps = dispatch => {
+    return {
+        addProduct: (prod) => dispatch(cartActions.addItemToCart(prod))
+    }
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps)( ProductItem);

@@ -11,12 +11,12 @@ import { Link } from 'react-router-dom';
 
 class MiniCart extends Component {
     render() {
+        console.log(this.props.cart);
         return (
             <div className={`${classes.mini__cart} ${this.props.open ? classes.active : ''}`}>
                 <h3>My Bag , <span className={classes.mini__cart__items__counter}>{this.props.count} items</span></h3>
-                <MiniCartItem />
-                <MiniCartItem />
-
+                
+                {this.props.cart.length > 0 && this.props.cart.map(cartItem => <MiniCartItem {...cartItem} />)}
                 <div className={classes.mini__cart__total}>Total: <span>$200.00</span></div>
                 <div className={classes.mini__cart__actions}>
                     <Link to="/cart" className={classes.mini__cart__view__btn} onClick={() => {
@@ -34,6 +34,7 @@ const mapStateToProps = state => {
     return {
         open: state.miniCart.open,
         count: state.cart.count,
+        cart: state.cart.items,
     }
 }
 const mapDispatchToProps = dispatch => {

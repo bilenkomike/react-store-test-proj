@@ -2,20 +2,56 @@ import {Component} from 'react';
 
 import classes from './MiniCartItem.module.css';
 
+import FetchData from '../../fetchData/FetchData';
+import { connect } from 'react-redux';
+
 
 class MiniCartItem extends Component {
+
+    state = {
+        loading: true
+    }
+    
+
+    getProduct = async() => {
+            this.setState(prevState => {
+                return {
+                    ...prevState,
+                    loading: true,
+                }
+            })
+            const resp = await FetchData.getProduct(this.props.id);
+            
+            
+            this.setState(prevState => {
+                return {
+                    ...prevState, 
+                    product: resp,
+                    loading: false,
+                }
+            });
+    } 
+    
+
+    componentDidMount() {
+        this.getProduct();
+    }
+
+
     render() {
-        return (
+        console.log(this.props);
+
+        if(!this.state.loading) return (
             <div className={classes.mini__cart__item}>
                 <div className={classes.mini__cart__item__left}>
                     <h2 className={classes.mini__cart__item__title}>
-                        Apollo
+                        {this.state.product.brand}
                     </h2>
                     <h4 className={classes.mini__cart__item__subtitle}>
-                        Running Short
+                       {this.state.product.name}
                     </h4>
                     <div className={classes.mini__cart__item__price}>
-                        $50.00
+                        {this.props.currency} 
                     </div>
 
                     <div className={classes.mini__cart__item__size}>
@@ -57,4 +93,12 @@ class MiniCartItem extends Component {
     }
 }
 
-export default MiniCartItem;
+
+
+const mapStateToProps = state => {
+    return {
+        currency: state.currencies.selected.symbol
+    }
+}
+
+export default connect(mapStateToProps) (MiniCartItem);
