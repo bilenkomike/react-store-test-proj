@@ -6,23 +6,18 @@ import cart from './images/cart.png';
 import  {Link} from 'react-router-dom';
 
 
+
 class ProductItem extends Component {
 
     state = {
         disabled: false
     };
 
-    
-
-
-    // onClick={() => {
-    //     if(!this.props.sold) {
-    //         console.log('clear');
-    //         return <Navigate to={`/product/${this.props.id}`} />
-    //     }
-    // }}
 
     render() {
+        
+        const price = this.props.prices.find(price => price.currency.symbol === this.props.currency);
+
         return (
             <div className={`${classes.product__item} ${this.props.sold ? classes.sold : ''}`} >
                 <div className={classes.product__hover__card}>
@@ -37,7 +32,7 @@ class ProductItem extends Component {
                 
                 <div className={classes.product__info}>
                 <h2 className={classes.product__title}><Link className={classes.product__title} to={`/product/${this.props.id}`}>{this.props.brand} {this.props.name}</Link></h2>
-                    <div className={classes.product__value}>PRICE</div>
+                    <div className={classes.product__value}>{this.props.currency} {price.amount}</div>
                 </div>
             </div>
         );

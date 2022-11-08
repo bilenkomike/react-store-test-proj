@@ -7,7 +7,6 @@ const Product = props => {
 
     const {prodId} = params;
     
-
     return <ProductComponent prodId={prodId} />
 }
 

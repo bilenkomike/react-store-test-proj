@@ -63,6 +63,20 @@ class FetchData {
 
   }
 
+  static getCurrencies = async () => {
+    const query = `
+    query{
+      currencies{symbol, label}
+    }
+     `;    
+     const data = await this.instanse.post('',{
+        query,
+    });
+    //  
+    return data.data.data.currencies;
+
+}
+
 
 }
 

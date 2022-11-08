@@ -5,6 +5,7 @@ import Product from './Pages/Product/Product';
 import Cart from './Pages/Cart/Cart';
 import Backdrop from './Components/UI/Backdrop/Backdrop';
 import MiniCart from './Components/MiniCart/MiniCart';
+import CurrencyList from './Components/Currency/CurrencyList';
 
 import { Routes, Route,Navigate } from 'react-router-dom';
 
@@ -36,6 +37,7 @@ class App extends Component{
       return (
         <>
         <MiniCart /> 
+        <CurrencyList active={true} />
           <Header  />
           <Backdrop />
           

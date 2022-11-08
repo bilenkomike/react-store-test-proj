@@ -13,6 +13,7 @@ import { connect } from 'react-redux';
 import { miniCartActions } from '../../store/miniCartSlice/miniCartSlice';
 
 import FetchData from '../../fetchData/FetchData';
+import { currenciesActions } from '../../store/currenciesSlice/currenciesSlice';
 
 class Header extends Component{
     state = {
@@ -74,10 +75,10 @@ class Header extends Component{
                         <img src={logo} alt="" />
                     </div>
                     <div className={classes.nav__right}>
-                        <div className={classes.currency__link} onClick={this.handleCurrencyClick.bind(this)}>
-                            $ <img src={downAngle} className={`${classes.angle} ${this.state.currencyListActive ? classes.active : ''}`} width="6" heigth="3"  alt="" />
+                        <div className={classes.currency__link} onClick={this.props.toggleCurrenciesList}>
+                            {this.props.curr !== null && this.props.curr.symbol} <img src={downAngle} className={`${classes.angle} ${this.props.openCurr ? classes.active : ''}`} width="6" heigth="3"  alt="" />
                         </div>
-                        <div className={classes.nav__cart} onClick={this.props.toggle}>
+                        <div className={classes.nav__cart} onClick={this.props.toggleMiniCart}>
                             <img src={cart} alt="" />
                             <span className={`${classes.cart__counter} ${this.state.cartCounter > 0 ? classes.active : ''}`} >{this.state.cartCounter}</span>
                         </div>
@@ -86,13 +87,18 @@ class Header extends Component{
                 </nav>
                 </div>
             </header>
-            <CurrencyList active={this.state.currencyListActive} />
-            <div style={{position: 'fixed', top: '0px', right: '0px',zIndex: 3}}>
-                
-                
-            </div>
+            
             </>
         );
+    }
+}
+
+
+const mapStateToProps = state => {
+    console.log(state);
+    return {
+        curr: state.currencies.selected,
+        openCurr: state.currencies.openList
     }
 }
 
@@ -101,9 +107,10 @@ class Header extends Component{
 
 const mapDispatchToProps = dispatch => {
     return {
-        toggle: () => dispatch(miniCartActions.toggle())
+        toggleMiniCart: () => dispatch(miniCartActions.toggle()),
+        toggleCurrenciesList: () => dispatch(currenciesActions.toggle())
     }
 }
 
 
-export default connect(null, mapDispatchToProps)(Header);
+export default connect(mapStateToProps, mapDispatchToProps)(Header);
