@@ -5,6 +5,8 @@ import classes from './MiniCartItem.module.css';
 import FetchData from '../../fetchData/FetchData';
 import { connect } from 'react-redux';
 
+import MiniCartAttributes from '../MiniCartAttributes/MiniCartAttributes';
+import { cartActions } from '../../store/cartSlice/cartSlice';
 
 class MiniCartItem extends Component {
 
@@ -20,6 +22,7 @@ class MiniCartItem extends Component {
                     loading: true,
                 }
             })
+            console.log(this.props.id);
             const resp = await FetchData.getProduct(this.props.id);
             
             
@@ -35,11 +38,13 @@ class MiniCartItem extends Component {
 
     componentDidMount() {
         this.getProduct();
+
+        console.log(this.state);
     }
 
 
     render() {
-        console.log(this.props);
+        console.log(this.props.id);
 
         if(!this.state.loading) return (
             <div className={classes.mini__cart__item}>
@@ -51,41 +56,24 @@ class MiniCartItem extends Component {
                        {this.state.product.name}
                     </h4>
                     <div className={classes.mini__cart__item__price}>
-                        {this.props.currency} 
+                        {this.props.currency} {this.state.product.prices.find(price => price.currency.symbol === this.props.currency).amount}
                     </div>
 
-                    <div className={classes.mini__cart__item__size}>
-                        <div className={classes.mini__cart__item__size__title}> Size:</div>
-                        <div className={classes.mini__cart__item__size__list}> 
-                            <div className={classes.mini__cart__item__size__list__item}>XS</div>
-                            <div className={`${classes.mini__cart__item__size__list__item} ${classes.active}`}>S</div>
-                            <div className={classes.mini__cart__item__size__list__item}>M</div>
-                            <div className={classes.mini__cart__item__size__list__item}>L</div>
-                        </div>
-                    </div>
-
-                    <div className={classes.mini__cart__item__color}>
-                        <div className={classes.mini__cart__item__color__title}> Color:</div>
-                        <div className={classes.mini__cart__item__color__list}> 
-                            <div className={`${classes.mini__cart__item__color__list__item} ${classes.active}`} style={{backgroundColor: '#D3D2D5'}} >
-                                
-                            </div>
-                            <div className={`${classes.mini__cart__item__color__list__item} `}  style={{backgroundColor: '#D3D2D5'}}>
-                            </div>
-                            <div className={`${classes.mini__cart__item__color__list__item} `}  style={{backgroundColor: '#D3D2D5'}}>
-                            </div>
-                        </div>
-                    </div>
+                    <MiniCartAttributes />
                     
                 </div>
                 <div className={classes.mini__cart__item__right}>
                     <div className={classes.mini__cart__item__add__buttons}>
-                        <div className={classes.mini__cart__item__sign}>+</div>
-                        <div className={classes.mini__cart__item__num__sign}>1</div>
-                        <div className={classes.mini__cart__item__sign}>-</div>
+                        <div className={classes.mini__cart__item__sign} onClick={() => {
+                            this.props.addItemToCart(this.props.id);
+                        }}>+</div>
+                        <div className={classes.mini__cart__item__num__sign}>{this.props.count}</div>
+                        <div className={classes.mini__cart__item__sign} onClick={() => {
+                            this.props.removeItemFromCart(this.props.id);
+                        }}>-</div>
                     </div>
                     <div className={classes.mini__cart__item__img__block}>
-                        <img src="https://via.placeholder.com/121x190" alt="" />
+                        <img src={this.state.product.gallery.at(0)} style={{ height: '190px', width: '121px', display: 'block' }} alt="" />
                     </div>
                 </div>
             </div>
@@ -101,4 +89,11 @@ const mapStateToProps = state => {
     }
 }
 
-export default connect(mapStateToProps) (MiniCartItem);
+const mapDispatchToProps = dispatch => {
+    return {
+        addItemToCart: (id, newState) => dispatch(cartActions.addItemToCart({id})),
+        removeItemFromCart: id => dispatch(cartActions.removeItemFromCart({id})),
+    }
+};
+
+export default connect(mapStateToProps,mapDispatchToProps) (MiniCartItem);
