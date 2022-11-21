@@ -1,82 +1,89 @@
+import { PureComponent } from "react";
 
-import {PureComponent} from 'react';
+import classes from "./Products.module.css";
+import ProductsList from "../../Components/Products/ProductsList";
 
-import classes from './Products.module.css';
-import ProductsList from '../../Components/Products/ProductsList';
-
-import FetchData from '../../fetchData/FetchData';
-
-import { connect } from 'react-redux';
-import { cartActions } from '../../store/cartSlice/cartSlice';
-
+import { connect } from "react-redux";
+// import { cartActions } from "../../store/cartSlice/cartSlice";
+import { productsActions } from "../../store/productsSlice/productsSlice";
 
 class ProductsComponent extends PureComponent {
-    state = {
-        loading: true,
-        products: []
+  state = {
+    loading: true,
+    products: [],
+  };
+
+  // getProducts = async () => {
+  //   this.setState((prevState) => {
+  //     return {
+  //       ...prevState,
+  //       loading: true,
+  //     };
+  //   });
+  //   const resp = await FetchData.getProducts(this.props.category);
+
+  //   this.setState((prevState) => {
+  //     return {
+  //       ...prevState,
+  //       loading: false,
+  //       products: resp,
+  //     };
+  //   });
+  // };
+
+  // componentDidUpdate(pr)
+
+  componentDidMount() {
+    if (this.props.category) {
+      this.props.getProdsByCategory(this.props.category);
+    } else {
+      this.props.getProdsByCategory();
     }
+  }
 
-    getProducts = async() => {
-            this.setState(prevState => {
-                return {
-                    ...prevState,
-                    loading: true,
-                }
-            })
-            const resp = await FetchData.getProducts(this.props.category);
-        
-            
-            
-            this.setState(prevState => {
-                return {
-                    ...prevState, 
-                    loading: false,
-                    products: resp
-                }
-            });
-        
-    } 
-
-    componentDidMount() {
-        this.getProducts();
+  componentDidUpdate(prevProps) {
+    if (prevProps.category !== this.props.category) {
+      this.props.getProdsByCategory(this.props.category);
     }
+  }
 
-    componentDidUpdate(prevProps) {
-        if(prevProps.category !== this.props.category) {
-            this.getProducts();
-        }
+  render() {
+    if (!this.props.products.isLoading) {
+      const { products } = this.props;
+      return (
+        <>
+          <h1
+            className={classes.products__title}
+            style={{ textTransform: "capitalize" }}
+          >
+            {this.props.category ? this.props.category : this.props.selectedCat}
+          </h1>
+
+          <ProductsList
+            category={this.props.category || this.props.selectedCat}
+            products={products}
+          />
+        </>
+      );
+    } else {
+      return <>Loading....</>;
     }
-    
-    
-
-    render() {
-          
-        
-        return (
-            <>
-                <h1 className={classes.products__title} style={{ textTransform: 'capitalize' }}>{this.props.category}</h1>
-                {!this.state.loading && <ProductsList category={this.props.category} products={this.state.products} />}
-            </>
-        );
-    }
-
+  }
 }
 
+const mapStateToProps = (state) => {
+  return {
+    products: state.products.selectedProds,
+    loading: state.products.isLoading,
+    selectedCat: state.products.selectedCategory,
+  };
+};
 
-const mapDispatchToProps = dispatch => {
-    return {
-        setAllProds: (prods ) => dispatch(cartActions.setAllProducts(prods)),
-        sortByCategory: category => dispatch(cartActions.sortByCategory(category))
-    }
-}
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getProdsByCategory: (category = "") =>
+      dispatch(productsActions.getProductsByCategory(category)),
+  };
+};
 
-const mapStateToProps = state => {
-    return {
-        
-    }
-}
-
-
-
-
-export default connect(mapStateToProps,mapDispatchToProps)(ProductsComponent);
+export default connect(mapStateToProps, mapDispatchToProps)(ProductsComponent);

@@ -1,62 +1,67 @@
-import React, {Component} from 'react';
-import Header from './Components/Header/Header';
-import Products from './Pages/Products/Products';
-import Product from './Pages/Product/Product';
-import Cart from './Pages/Cart/Cart';
-import Backdrop from './Components/UI/Backdrop/Backdrop';
-import MiniCart from './Components/MiniCart/MiniCart';
-import CurrencyList from './Components/Currency/CurrencyList';
+import React, { Component } from "react";
+import Header from "./Components/Header/Header";
+import Products from "./Pages/Products/Products";
+import Product from "./Pages/Product/Product";
+import Cart from "./Pages/Cart/Cart";
+import Backdrop from "./Components/UI/Backdrop/Backdrop";
+import MiniCart from "./Components/MiniCart/MiniCart";
+import CurrencyList from "./Components/Currency/CurrencyList";
 
-import { Routes, Route,Navigate } from 'react-router-dom';
+import { Routes, Route } from "react-router-dom";
 
-import FetchData from './fetchData/FetchData';
+import { getProducts } from "./store/productsSlice/productsSlice";
+import { connect } from "react-redux";
 
-
-class App extends Component{
+class App extends Component {
   state = {
-    isPending: true,
-    def: ''
-  }
-
-  firstTitle = async () => {
-    const data = await FetchData.getLinks();
-    
-    if(data.length > 0) {
-      this.setState({ isPending: false,def: data[0].name });
-    }
-  }
+    loading: true,
+  };
 
   componentDidMount() {
-    this.firstTitle();
+    this.props.getProducts();
   }
-  
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.loading !== this.props.loading) {
+      this.setState({ loading: false });
+    }
+    return;
+  }
 
   render() {
-
-    if(!this.state.isPending) {
+    if (!this.state.loading) {
       return (
         <>
-        <MiniCart /> 
-        <CurrencyList active={true} />
-          <Header  />
+          <MiniCart />
+          <CurrencyList active={true} />
+          <Header />
           <Backdrop />
-          
-  
+
           <Routes>
-            <Route path="/*" element={<Navigate to={`/${this.state.def}`} />} />
+            <Route path="/" element={<Products />} />
             <Route path="/:category" element={<Products />} />
             <Route path="/cart" element={<Cart />} />
             <Route path="/product/:prodId" element={<Product />} />
-            
           </Routes>
         </>
       );
+    } else {
+      return <p>Loading...</p>;
     }
-    else {
-      return <p>Loading...</p>
-    }
-    
   }
 }
 
-export default App;
+const mapStateToProps = (state) => {
+  return {
+    loading: state.products.isLoading,
+    def: state.products.categories,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getProducts: () => dispatch(getProducts()),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
