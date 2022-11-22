@@ -12,9 +12,6 @@ import downAngle from "./images/angle-down-solid.svg";
 // css
 import classes from "./Header.module.css";
 
-// fetch
-import FetchData from "../../fetchData/FetchData";
-
 // redux
 import { connect } from "react-redux";
 
@@ -24,67 +21,31 @@ import { currenciesActions } from "../../store/currenciesSlice/currenciesSlice";
 class Header extends Component {
   state = {
     links: [],
-    activeLink: "",
-    cartCounter: 0,
   };
 
   handleCurrencyClick() {
     this.setState({ currencyListActive: !this.state.currencyListActive });
   }
 
-  loadLinks = async () => {
-    if (this.state.links.length === 0) {
-      const data = await FetchData.getLinks();
-
-      if (data.length > 0) {
-        if (this.state.activeLink === "") {
-          this.setState((prevState) => {
-            return {
-              ...prevState,
-              activeLink: data[0].name,
-            };
-          });
-        }
-        this.setState((prevState) => {
-          return {
-            ...prevState,
-            links: data,
-          };
-        });
-        return;
-      }
-      return;
-    }
-    return false;
-  };
-
-  componentDidMount() {}
-
   render() {
-    this.loadLinks();
-
     return (
       <>
         <header className={classes.header}>
           <div className={classes.header__inner}>
             <nav className={classes.nav}>
               <div className={classes.nav__left}>
-                {this.state.links.map((link) => (
-                  <Link
-                    key={link.name}
-                    onClick={() =>
-                      this.setState((prevState) => {
-                        return { ...prevState, activeLink: link.name };
-                      })
-                    }
-                    to={`/${link.name}`}
-                    className={`${classes.nav__link} ${
-                      this.props.activeLink === link.name ? classes.active : ""
-                    }`}
-                  >
-                    {link.name}
-                  </Link>
-                ))}
+                {this.props.categories &&
+                  this.props.categories.map((link) => (
+                    <Link
+                      key={link}
+                      to={`/${link}`}
+                      className={`${classes.nav__link} ${
+                        this.props.activeLink === link ? classes.active : ""
+                      }`}
+                    >
+                      {link}
+                    </Link>
+                  ))}
               </div>
               <div className={classes.logo__box}>
                 <img src={logo} alt="" />
@@ -133,6 +94,7 @@ const mapStateToProps = (state) => {
     totalAmount: state.cart.count,
     openCurr: state.currencies.openList,
     activeLink: state.products.selectedCategory,
+    categories: state.products.categories,
   };
 };
 

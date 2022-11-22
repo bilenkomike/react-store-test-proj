@@ -8,56 +8,61 @@ import { connect } from "react-redux";
 import { cartActions } from "../../store/cartSlice/cartSlice";
 
 class ProductItem extends Component {
-  state = {
-    disabled: false,
-  };
-
   render() {
     const price = this.props.prices.find(
       (price) => price.currency.symbol === this.props.currency
     );
-    // console.log(this.props);
+
     return (
       <div className={`${classes.product__item}`}>
-        <div className={classes.product__hover__card}>
-          <div className={classes.product__hover__card__text}>Out of Stock</div>
-        </div>
-        <div className={classes.product__image}>
-          <Link to={`/product/${this.props.id}`}>
+        <Link to={`/product/${this.props.id}`}>
+          <div className={classes.product__image}>
+            {this.props.sold && (
+              <div className={classes.product__hover__card}>
+                <div className={classes.product__hover__card__text}>
+                  Out of Stock
+                </div>
+              </div>
+            )}
             <img
               className={classes.product__img}
               src={this.props.image}
               alt=""
             />
-          </Link>
-          {!this.props.sold && (
-            <button
-              className={classes.product__cart__button}
-              onClick={() => {
-                console.log(this.props);
-                this.props.addProduct({
-                  id: this.props.id,
-                  prices: this.props.prices,
-                  attributes: this.props.attributes,
-                });
-                // id, prices, attributes
-              }}
-            >
-              <img src={cart} alt="" />
-            </button>
-          )}
-        </div>
+
+            {!this.props.sold && (
+              <button
+                className={classes.product__cart__button}
+                onClick={(event) => {
+                  event.preventDefault();
+                  this.props.addProduct({
+                    id: this.props.id,
+                    prices: this.props.prices,
+                    attributes: this.props.attributes,
+                  });
+                  // id, prices, attributes
+                }}
+              >
+                <img src={cart} alt="" />
+              </button>
+            )}
+          </div>
+        </Link>
 
         <div className={classes.product__info}>
           <h2 className={classes.product__title}>
             <Link
               className={classes.product__title}
+              style={this.props.sold ? { opacity: 0.4 } : { opacity: 1 }}
               to={`/product/${this.props.id}`}
             >
               {this.props.brand} {this.props.name}
             </Link>
           </h2>
-          <div className={classes.product__value}>
+          <div
+            className={classes.product__value}
+            style={this.props.sold ? { opacity: 0.4 } : { opacity: 1 }}
+          >
             {this.props.currency} {price.amount}
           </div>
         </div>

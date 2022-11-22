@@ -7,10 +7,29 @@ import { connect } from "react-redux";
 import { miniCartActions } from "../../store/miniCartSlice/miniCartSlice";
 
 import { Link } from "react-router-dom";
+import { productsActions } from "../../store/productsSlice/productsSlice";
 
 class MiniCart extends Component {
+  state = {
+    cartObjs: [],
+  };
+  componentDidUpdate(prevProps) {
+    if (prevProps.cart !== this.props.cart) {
+      // console.log("CARTS NOT EQUAL");
+      // console.log(this.props.cart);
+
+      let ids = [];
+      this.props.cart.map((item) => {
+        ids.push(item.id);
+        return ids;
+      });
+
+      this.props.getProductsForCart(ids);
+
+      // console.log(this.props.productsForCart);
+    }
+  }
   render() {
-    // console.log(this.props.total);
     return (
       <div
         className={`${classes.mini__cart} ${
@@ -24,16 +43,27 @@ class MiniCart extends Component {
           </span>
         </h3>
 
-        {this.props.cart.length > 0 &&
-          this.props.cart.map((cartItem) => (
-            <MiniCartItem key={cartItem.id} {...cartItem} />
-          ))}
+        <div className={classes.mini__cart__inner}>
+          {this.props.cart.length > 0 &&
+            this.props.cart.map((cartItem) => (
+              <MiniCartItem
+                key={cartItem.id + Math.random().toString()}
+                {...cartItem}
+                product={this.props.productsForCart.find(
+                  (item) => item.id === cartItem.id
+                )}
+              />
+            ))}
+        </div>
         {this.props.currency !== null && (
           <div className={classes.mini__cart__total}>
             Total:
             <span>
               {this.props.currency.symbol}
-              {this.props.total[this.props.currency.symbol]}
+              {this.props.total[this.props.currency.symbol] === undefined &&
+                "0.00"}
+              {this.props.total[this.props.currency.symbol] !== undefined &&
+                this.props.total[this.props.currency.symbol].toFixed(2)}
             </span>
           </div>
         )}
@@ -63,11 +93,14 @@ const mapStateToProps = (state) => {
     count: state.cart.count,
     cart: state.cart.items,
     total: state.cart.total,
+    productsForCart: state.products.cartProds,
   };
 };
 const mapDispatchToProps = (dispatch) => {
   return {
     toggleMiniCart: () => dispatch(miniCartActions.toggle()),
+    getProductsForCart: (ids) =>
+      dispatch(productsActions.getProductsForCart(ids)),
   };
 };
 

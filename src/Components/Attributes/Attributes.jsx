@@ -1,94 +1,100 @@
-import { Component } from "react";
+import { PureComponent } from "react";
 import classes from "./Attributes.module.css";
 
-class Attributes extends Component {
+class Attributes extends PureComponent {
   state = {};
+
+  setNewAttrs = () => {
+    this.props.setAttrs(this.state.newState);
+  };
+
   componentDidMount() {
-    console.log(this.props);
-    this.props.items.map((item, index) => {
-      if (index === 0) {
-        this.setState({
-          [this.props.name.split(" ").join("-").toLowerCase()]:
-            item.type === "text" ? item.value : item.displayValue,
-        });
-      }
-      this.setState((prevState) => {
-        return { ...prevState, ...this.state };
-      });
-    });
+    this.setProps();
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (prevState !== this.state) {
-      this.props.getProductsProps(this.state);
+    if (prevProps.id !== this.props.id) {
+      this.setProps();
     }
   }
 
-  onPropClickHandler = (key, value) => {
-    this.setState((prevState) => {
-      return { ...prevState, [key]: value };
+  setProps() {
+    let newState = {};
+    const { attributes } = this.props;
+    attributes.map((attr) => {
+      newState[attr.name.split(" ").join("-").toLowerCase()] =
+        attr.type === "text" ? attr.items[0].value : attr.items[0].displayValue;
+      return attr;
     });
-    this.props.getProductsProps(this.state);
+
+    this.setState({ newState });
+    setTimeout(this.setNewAttrs, 200);
+  }
+
+  setNewProp = (key, val) => {
+    const newStateProp = {};
+    newStateProp[key] = val;
+    this.setState((prevState) => {
+      return {
+        ...prevState,
+        newState: { ...prevState.newState, ...newStateProp },
+      };
+    });
+    setTimeout(this.setNewAttrs, 200);
   };
 
   render() {
-    const { type, name, items } = this.props;
-    // console.log(this.state);
-
-    const keyVal = name.split(" ").join("-").toLowerCase();
-
-    if (type === "text") {
-      return (
-        <div className={classes.product__size}>
-          <div className={classes.product__size__title}>
-            {name.toUpperCase()}:
+    return this.props.attributes.map((attribute) => {
+      const { type, name, items } = attribute;
+      const keyVal = name.split(" ").join("-").toLowerCase();
+      const props = { ...this.state.newState };
+      if (type.trim() === "text") {
+        return (
+          <div className={classes.product__size} key={name}>
+            <div className={classes.product__size__title}>
+              {name.toUpperCase()}:
+            </div>
+            <div className={classes.product__size__list}>
+              {items.map((item, index) => {
+                return (
+                  <div
+                    onClick={() => this.setNewProp([keyVal], item.value)}
+                    className={`${classes.product__size__list__item} ${
+                      props[keyVal] === item.value && classes.active
+                    }`}
+                    key={`${keyVal}-${item.value}`}
+                    id={`${keyVal}-${item.value}`}
+                  >
+                    {item.value}
+                  </div>
+                );
+              })}
+            </div>
           </div>
-          <div className={classes.product__size__list}>
-            {items.map((item) => {
-              return (
-                <div
-                  onClick={this.onPropClickHandler.bind(
-                    this,
-                    keyVal,
-                    item.displayValue
-                  )}
-                  className={`${classes.product__size__list__item} ${
-                    this.state[keyVal] === item.displayValue && classes.active
-                  }`}
-                  key={`${keyVal}-${item.displayValue}`}
-                  id={`${keyVal}-${item.displayValue}`}
-                >
-                  {item.value}
-                </div>
-              );
-            })}
+        );
+      } else {
+        return (
+          <div className={classes.product__color} key={name}>
+            <div className={classes.product__color__title}>
+              {name.toUpperCase()}:
+            </div>
+            <div className={classes.product__color__list}>
+              {items.map((item, index) => {
+                return (
+                  <div
+                    onClick={() => this.setNewProp([keyVal], item.displayValue)}
+                    className={`${classes.product__color__list__item} ${
+                      props[keyVal] === item.displayValue && classes.active
+                    }`}
+                    style={{ backgroundColor: item.displayValue }}
+                  ></div>
+                );
+              })}
+            </div>
           </div>
-        </div>
-      );
-    } else {
-      return (
-        <div className={classes.product__color}>
-          <div className={classes.product__color__title}>
-            {name.toUpperCase()}:
-          </div>
-          <div className={classes.product__color__list}>
-            {items.map((item) => (
-              <div
-                onClick={this.onPropClickHandler.bind(
-                  this,
-                  keyVal,
-                  item.displayValue
-                )}
-                className={`${classes.product__color__list__item} ${
-                  this.state[keyVal] === item.displayValue && classes.active
-                }`}
-                style={{ backgroundColor: item.displayValue }}
-              ></div>
-            ))}
-          </div>
-        </div>
-      );
-    }
+        );
+      }
+    });
   }
 }
 

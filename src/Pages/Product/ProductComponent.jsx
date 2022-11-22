@@ -8,7 +8,7 @@ import parser from "html-react-parser";
 import Attributes from "../../Components/Attributes/Attributes";
 
 import { connect } from "react-redux";
-// import { cartActions } from "../../store/cartSlice/cartSlice";
+import { cartActions } from "../../store/cartSlice/cartSlice";
 import { productsActions } from "../../store/productsSlice/productsSlice";
 
 class ProductComponent extends Component {
@@ -20,24 +20,26 @@ class ProductComponent extends Component {
     this.props.getProduct(this.props.prodId);
   }
 
-  // componentDidUpdate(prevProps) {
-  //   if (prevProps.prodId !== this.props.prodId) {
-  //     this.getProduct();
-  //   }
-  // }
-
   imgListClickHandle = (img) => {
     this.setState({ img });
   };
 
-  getProductsProps = (props) => {
-    console.log(props);
+  addToCartHandler = () => {
+    const { id, prices } = this.props.product;
+
+    console.log(this.state.attrs);
+    this.props.addToCardItem({ id, prices, attributes: this.state.attrs });
+    // prepared params and keys
   };
 
+  setAttrs = (attrs) => this.setState({ attrs });
+
   render() {
+    console.log(this.state);
     if (this.props.product.name) {
-      const { description, name, brand, gallery, attributes, prices } =
+      const { description, name, brand, gallery, attributes, prices, id } =
         this.props.product;
+
       return (
         <div className={classes.product}>
           <div className={classes.product__additional__img__list}>
@@ -62,14 +64,13 @@ class ProductComponent extends Component {
           <div>
             <h1 className={classes.product__title}>{name}</h1>
             <h2 className={classes.product__subtitle}>{brand}</h2>
-            {attributes.length > 0 &&
-              attributes.map((attribute) => (
-                <Attributes
-                  key={attribute.id}
-                  {...attribute}
-                  getProductsProps={this.getProductsProps}
-                />
-              ))}
+            {attributes.length > 0 && (
+              <Attributes
+                attributes={attributes}
+                setAttrs={this.setAttrs}
+                id={id}
+              />
+            )}
             <div className={classes.product__price}>
               <div className={classes.product__price__title}> PRICE:</div>
               <div className={classes.product__price__value}>
@@ -82,7 +83,12 @@ class ProductComponent extends Component {
                   .amount.toFixed(2)}
               </div>
             </div>
-            <button className={classes.product__button}>Add to cart</button>
+            <button
+              className={classes.product__button}
+              onClick={this.addToCartHandler}
+            >
+              Add to cart
+            </button>
             <div className={classes.product__description}>
               {parser(description)}
             </div>
@@ -105,6 +111,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispathc) => {
   return {
     getProduct: (id) => dispathc(productsActions.getProduct(id)),
+    addToCardItem: (product) => dispathc(cartActions.addItemToCart(product)),
   };
 };
 

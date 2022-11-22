@@ -33,6 +33,7 @@ const productsSlice = createSlice({
     categories: [],
     selectedProds: [],
     product: {},
+    cartProds: [],
   },
   reducers: {
     getProductsByCategory: (state, action) => {
@@ -49,9 +50,20 @@ const productsSlice = createSlice({
       }
     },
     getProduct: (state, action) => {
+      state.isLoading = true;
       state.product = state.products[0].products.find(
         (product) => product.id === action.payload
       );
+      // state.isLoading = false;
+    },
+    getProductsForCart: (state, action) => {
+      state.isLoading = true;
+      let cartObjs = [];
+      action.payload.map((id) =>
+        cartObjs.push(state.products[0].products.find((item) => item.id === id))
+      );
+      state.cartProds = cartObjs;
+      // state.isLoading = false;
     },
   },
   extraReducers: {
