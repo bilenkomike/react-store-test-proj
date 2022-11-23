@@ -41,7 +41,6 @@ class ProductItem extends Component {
                     attributes: this.props.attributes,
                     additionType: "list",
                   });
-                  // id, prices, attributes
                 }}
               >
                 <img src={cart} alt="" />

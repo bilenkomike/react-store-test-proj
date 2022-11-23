@@ -21,11 +21,17 @@ class Attributes extends PureComponent {
   setProps() {
     let newState = {};
     const { attributes } = this.props;
-    attributes.map((attr) => {
-      newState[attr.name.split(" ").join("-").toLowerCase()] =
-        attr.type === "text" ? attr.items[0].value : attr.items[0].displayValue;
-      return attr;
-    });
+    if (!this.props.selectedAttributes) {
+      attributes.map((attr) => {
+        newState[attr.name.split(" ").join("-").toLowerCase()] =
+          attr.type === "text"
+            ? attr.items[0].value
+            : attr.items[0].displayValue;
+        return attr;
+      });
+    } else {
+      newState = this.props.selectedAttributes;
+    }
 
     this.setState({ newState });
     setTimeout(this.setNewAttrs, 200);
@@ -58,10 +64,12 @@ class Attributes extends PureComponent {
               {items.map((item, index) => {
                 return (
                   <div
-                    onClick={() => this.setNewProp([keyVal], item.value)}
+                    onClick={() =>
+                      !this.props.cart && this.setNewProp([keyVal], item.value)
+                    }
                     className={`${classes.product__size__list__item} ${
                       props[keyVal] === item.value && classes.active
-                    }`}
+                    } ${this.props.cart && classes.attribute_no_click}`}
                     key={`${keyVal}-${item.value}`}
                     id={`${keyVal}-${item.value}`}
                   >
@@ -82,10 +90,13 @@ class Attributes extends PureComponent {
               {items.map((item, index) => {
                 return (
                   <div
-                    onClick={() => this.setNewProp([keyVal], item.displayValue)}
+                    onClick={() =>
+                      !this.props.cart &&
+                      this.setNewProp([keyVal], item.displayValue)
+                    }
                     className={`${classes.product__color__list__item} ${
                       props[keyVal] === item.displayValue && classes.active
-                    }`}
+                    } ${this.props.cart && classes.attribute_no_click}`}
                     style={{ backgroundColor: item.displayValue }}
                     key={`attributes_${item.displayValue}`}
                   ></div>

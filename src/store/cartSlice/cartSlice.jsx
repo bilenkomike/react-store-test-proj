@@ -59,7 +59,6 @@ const cartSlice = createSlice({
 
       let attributes = {};
       if (action.payload.additionType === "list") {
-        // console.log(product.attributes);
         product.attributes.map((attribute) => {
           attributes[attribute.name.toLowerCase().split(" ").join("-")] =
             attribute.type === "text"
@@ -83,13 +82,10 @@ const cartSlice = createSlice({
           count: count,
           prices: product.prices,
         };
-        // console.log(attributes);
 
-        // console.log(item);
         state.items.push(item);
       } else {
         state.items.map((item) => {
-          // console.log(product);
           const { attributes } = item;
           let thisProd = true;
           const { attributes: prodAttributes } = product;

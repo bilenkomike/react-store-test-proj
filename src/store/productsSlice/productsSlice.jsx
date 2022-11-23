@@ -54,7 +54,6 @@ const productsSlice = createSlice({
       state.product = state.products[0].products.find(
         (product) => product.id === action.payload
       );
-      // state.isLoading = false;
     },
     getProductsForCart: (state, action) => {
       state.isLoading = true;
@@ -63,7 +62,6 @@ const productsSlice = createSlice({
         cartObjs.push(state.products[0].products.find((item) => item.id === id))
       );
       state.cartProds = cartObjs;
-      // state.isLoading = false;
     },
   },
   extraReducers: {
