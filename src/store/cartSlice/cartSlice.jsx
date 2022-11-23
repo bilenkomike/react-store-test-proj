@@ -1,7 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-console.log(JSON.parse(localStorage.getItem("cart")));
-
 const productsExistence = (product, list) => {
   let exists = true;
   if (!list.find((item) => item.id === product.id)) {

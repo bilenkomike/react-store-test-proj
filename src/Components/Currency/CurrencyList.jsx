@@ -7,7 +7,6 @@ import {
   currenciesActions,
   getCurrencies,
 } from "../../store/currenciesSlice/currenciesSlice";
-// import { cartActions } from "../../store/cartSlice/cartSlice";
 
 class CurrencyList extends Component {
   componentDidMount() {

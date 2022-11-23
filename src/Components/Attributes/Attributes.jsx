@@ -61,7 +61,7 @@ class Attributes extends PureComponent {
               {name.toUpperCase()}:
             </div>
             <div className={classes.product__size__list}>
-              {items.map((item, index) => {
+              {items.map((item) => {
                 return (
                   <div
                     onClick={() =>
@@ -87,7 +87,7 @@ class Attributes extends PureComponent {
               {name.toUpperCase()}:
             </div>
             <div className={classes.product__color__list}>
-              {items.map((item, index) => {
+              {items.map((item) => {
                 return (
                   <div
                     onClick={() =>

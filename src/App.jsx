@@ -6,6 +6,7 @@ import Cart from "./Pages/Cart/Cart";
 import Backdrop from "./Components/UI/Backdrop/Backdrop";
 import MiniCart from "./Components/MiniCart/MiniCart";
 import CurrencyList from "./Components/Currency/CurrencyList";
+import Loader from "./Components/UI/Loader/Loader";
 
 import { Routes, Route } from "react-router-dom";
 
@@ -46,7 +47,7 @@ class App extends Component {
         </>
       );
     } else {
-      return <p>Loading...</p>;
+      return <Loader />;
     }
   }
 }

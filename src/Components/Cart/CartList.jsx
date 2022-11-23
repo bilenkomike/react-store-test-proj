@@ -7,7 +7,6 @@ import { connect } from "react-redux";
 
 class CartList extends Component {
   render() {
-    console.log(this.props.cart);
     return (
       <>
         <hr className={classes.cart__line} />

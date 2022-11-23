@@ -24,7 +24,6 @@ class CartItem extends Component {
   };
 
   render() {
-    console.log(this.props);
     const { product, attributes, count } = this.props;
     return (
       product && (
@@ -53,7 +52,18 @@ class CartItem extends Component {
             </div>
             <div className={classes.cart__item__right}>
               <div className={classes.cart__item__add__buttons}>
-                <div className={classes.cart__item__sign}>+</div>
+                <div
+                  className={classes.cart__item__sign}
+                  onClick={() => {
+                    this.props.addItemToCart({
+                      id: this.props.id,
+                      attributes: this.props.attributes,
+                      prices: this.props.prices,
+                    });
+                  }}
+                >
+                  +
+                </div>
                 <div className={classes.cart__item__num__sign}>{count}</div>
                 <div
                   className={classes.cart__item__sign}

@@ -5,8 +5,6 @@ import CartList from "../../Components/Cart/CartList";
 import classes from "./Cart.module.css";
 import { connect } from "react-redux";
 
-// amount - 100%
-// x - 21%
 class Cart extends Component {
   render() {
     return (

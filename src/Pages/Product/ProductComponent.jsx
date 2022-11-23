@@ -3,9 +3,8 @@ import { Component } from "react";
 import classes from "./Product.module.css";
 import parser from "html-react-parser";
 
-// import FetchData from "../../fetchData/FetchData";
-
 import Attributes from "../../Components/Attributes/Attributes";
+import Loader from "../../Components/UI/Loader/Loader";
 
 import { connect } from "react-redux";
 import { cartActions } from "../../store/cartSlice/cartSlice";
@@ -33,7 +32,6 @@ class ProductComponent extends Component {
       attributes: this.state.attrs,
       additionType: "single",
     });
-    // prepared params and keys
   };
 
   setAttrs = (attrs) => this.setState({ attrs });
@@ -111,7 +109,7 @@ class ProductComponent extends Component {
         </div>
       );
     } else {
-      return <p>Loading....</p>;
+      return <Loader />;
     }
   }
 }

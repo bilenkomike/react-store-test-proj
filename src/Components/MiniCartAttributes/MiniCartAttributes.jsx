@@ -3,12 +3,9 @@ import { Component } from "react";
 
 class MiniCartAttributes extends Component {
   render() {
-    // console.log(this.props);
-
     const { attributes, selectedAttributes } = this.props;
 
     return attributes.map((attribute) => {
-      //   console.log(attribute);
       const { name, items, type } = attribute;
       if (type === "text") {
         return (

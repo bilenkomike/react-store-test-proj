@@ -31,7 +31,6 @@
 }
 
 .product__color__list__item {
-  /* display: flex; */
   display: block;
   width: 32px;
   height: 32px;
@@ -39,13 +38,12 @@
 
   margin-right: 10px;
   cursor: pointer;
+
+  outline: 1px solid rgba(138, 138, 138, 0.7);
 }
 
 .product__color__list__item.active {
   outline: 1px solid #5ece7b;
-
-  /* padding: 1px;
-    border: 1px solid #5ECE7B; */
 }
 
 .attribute_no_click {

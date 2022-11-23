@@ -71,14 +71,10 @@ class ProductItem extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {};
-};
-
 const mapDispatchToProps = (dispatch) => {
   return {
     addProduct: (prod) => dispatch(cartActions.addItemToCart(prod)),
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ProductItem);
+export default connect(null, mapDispatchToProps)(ProductItem);

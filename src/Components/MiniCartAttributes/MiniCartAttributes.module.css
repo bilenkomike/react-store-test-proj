@@ -36,6 +36,7 @@
   height: 20px;
   margin-right: 10px;
   border: 1px solid #fff;
+  outline: 1px solid rgba(138, 138, 138, 0.7);
 }
 
 .mini__cart__item__color__list__item.active {

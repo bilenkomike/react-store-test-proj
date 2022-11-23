@@ -1,70 +1,28 @@
-# Getting Started with Create React App
+# Start
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+To start the project
 
-## Available Scripts
+1. download the code/clone repo to your pc
+2. run npm i/npm install in folder where project js
+3. run npm start
 
-In the project directory, you can run:
+# Bug Fixes
 
-### `npm start`
+1.dangerouslySetInnerHTML should not be used
+2.Please format your code properly, indentation, empty lines, not more than 1 empty line is allowed, the empty line at the end of each file, etc  
+3.It should be possible to open the PDP of the out-of-stock product
+4.Attributes should not be selectable in the cart and mini-cart
+5.On reload I should have previously selected currency not default one
+6.On reload, I should have previously added cart items to the cart
+7.Prices and total should be displayed as valid prices (with 2 decimals after the dot), check different currencies
+8.Categories ids should be added to the path name to have the opportunity to implement logic that allows users to stay on the selected category after reloading and/or sharing the link, the same with products
+9.It should be possible to add the same product to the cart with different attributes. No delete from cart button should be present on PDP, the user should be able to add to the cart as many times as wants, the same for the green button on PLP
+10.Review your requests, too many of them on reload on PLP (10), and some of them are fired twice, should be a maximum 3, do not fetch all categories and related products only category and related products of the category, the user is currently in.
+11.Resolve terminal warnings
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### Additional notes
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+# Due to 10th item in 'Bug Fixes List'
 
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+So the task was to minimize requests
+Now there are 2 http requests, but due to no ability to send request to get one specific category, as the requests don`t work (photoes below), I decided to make a single query for all products and categories'

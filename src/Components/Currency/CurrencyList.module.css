@@ -1,38 +1,37 @@
-
 .currency__list {
-    display: block;
-    width: 114px;
-    
-    opacity: 0;
+  display: block;
+  width: 114px;
 
-    background-color: #fff;
-    box-shadow: 0px 4px 35px rgba(168,172,176,.19);
+  opacity: 0;
 
-    transition: opacity .2s linear;
+  background-color: #fff;
+  box-shadow: 0px 4px 35px rgba(168, 172, 176, 0.19);
 
-    position: fixed;
-    top: 65px;
-    right: 90px;
-    z-index: 4;
+  transition: opacity 0.2s linear;
+
+  position: fixed;
+  top: 65px;
+  right: 90px;
+  z-index: 4;
 }
 
 .currency__list.active {
-    opacity: 1;
+  opacity: 1;
 }
 
 .currency__list__item {
-    padding: 8px 20px;
-    
-    text-transform: uppercase;
-    font-weight: 500;
-    font-size: 18px;
-    
-    background-color: #fff;
-    
-    transition: background-color .1s linear;
+  padding: 8px 20px;
 
-    cursor: pointer;
+  text-transform: uppercase;
+  font-weight: 500;
+  font-size: 18px;
+
+  background-color: #fff;
+
+  transition: background-color 0.1s linear;
+
+  cursor: pointer;
 }
 .currency__list__item:hover {
-    background-color: #EEEEEE;
+  background-color: #eeeeee;
 }

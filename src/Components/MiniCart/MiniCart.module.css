@@ -35,18 +35,20 @@
 }
 
 .mini__cart__view__btn {
-  display: block;
+  display: flex;
   width: 140px;
   height: 43px;
-
   border-radius: 0;
   background-color: transparent;
-
   font-weight: 700;
   font-size: 14px;
   text-transform: uppercase;
-
   cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid;
 }
 
 .mini__cart__success__btn {

@@ -2,9 +2,10 @@ import { PureComponent } from "react";
 
 import classes from "./Products.module.css";
 import ProductsList from "../../Components/Products/ProductsList";
+import Loader from "../../Components/UI/Loader/Loader";
 
 import { connect } from "react-redux";
-// import { cartActions } from "../../store/cartSlice/cartSlice";
+
 import { productsActions } from "../../store/productsSlice/productsSlice";
 
 class ProductsComponent extends PureComponent {
@@ -12,26 +13,6 @@ class ProductsComponent extends PureComponent {
     loading: true,
     products: [],
   };
-
-  // getProducts = async () => {
-  //   this.setState((prevState) => {
-  //     return {
-  //       ...prevState,
-  //       loading: true,
-  //     };
-  //   });
-  //   const resp = await FetchData.getProducts(this.props.category);
-
-  //   this.setState((prevState) => {
-  //     return {
-  //       ...prevState,
-  //       loading: false,
-  //       products: resp,
-  //     };
-  //   });
-  // };
-
-  // componentDidUpdate(pr)
 
   componentDidMount() {
     if (this.props.category) {
@@ -66,7 +47,7 @@ class ProductsComponent extends PureComponent {
         </>
       );
     } else {
-      return <>Loading....</>;
+      return <Loader />;
     }
   }
 }
