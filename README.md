@@ -20,9 +20,12 @@ To start the project
 10.Review your requests, too many of them on reload on PLP (10), and some of them are fired twice, should be a maximum 3, do not fetch all categories and related products only category and related products of the category, the user is currently in.
 11.Resolve terminal warnings
 
-### Additional notes
+# Additional notes
 
-# Due to 10th item in 'Bug Fixes List'
+## Due to 10th item in 'Bug Fixes List'
 
 So the task was to minimize requests
-Now there are 2 http requests, but due to no ability to send request to get one specific category, as the requests don`t work (photoes below), I decided to make a single query for all products and categories'
+Now there are 2 http requests, but due to no ability to send request to get one specific category, as the requests don't work (photoes below), I decided to make a single query for all products and categories'
+<img width="1371" alt="image" src="https://user-images.githubusercontent.com/80154023/203564888-e35ff9eb-213f-4ca2-9ec7-3dd66f4c14de.png">
+<img width="1384" alt="image" src="https://user-images.githubusercontent.com/80154023/203565056-e8bb340f-2cf7-40ee-beb7-7c906503d627.png">
+
