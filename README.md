@@ -6,7 +6,9 @@ To start the project
 
 2. run npm install in the folder where the project is;
 
-3. run npm start;
+3. run npm start for backend server;
+
+3. run npm start for frontend;
 
 # Bug Fixes
 
