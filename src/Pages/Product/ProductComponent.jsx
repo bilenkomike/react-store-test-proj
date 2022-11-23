@@ -27,18 +27,29 @@ class ProductComponent extends Component {
   addToCartHandler = () => {
     const { id, prices } = this.props.product;
 
-    console.log(this.state.attrs);
-    this.props.addToCardItem({ id, prices, attributes: this.state.attrs });
+    this.props.addToCardItem({
+      id,
+      prices,
+      attributes: this.state.attrs,
+      additionType: "single",
+    });
     // prepared params and keys
   };
 
   setAttrs = (attrs) => this.setState({ attrs });
 
   render() {
-    console.log(this.state);
     if (this.props.product.name) {
-      const { description, name, brand, gallery, attributes, prices, id } =
-        this.props.product;
+      const {
+        description,
+        name,
+        brand,
+        gallery,
+        attributes,
+        prices,
+        id,
+        inStock,
+      } = this.props.product;
 
       return (
         <div className={classes.product}>
@@ -84,10 +95,14 @@ class ProductComponent extends Component {
               </div>
             </div>
             <button
-              className={classes.product__button}
+              className={`${classes.product__button} ${
+                !inStock && classes.not__in__stock
+              }`}
               onClick={this.addToCartHandler}
+              disabled={!inStock}
             >
-              Add to cart
+              {inStock && "Add to cart"}
+              {!inStock && "Not in Stock"}
             </button>
             <div className={classes.product__description}>
               {parser(description)}

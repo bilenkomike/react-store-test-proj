@@ -39,6 +39,7 @@ class ProductItem extends Component {
                     id: this.props.id,
                     prices: this.props.prices,
                     attributes: this.props.attributes,
+                    additionType: "list",
                   });
                   // id, prices, attributes
                 }}

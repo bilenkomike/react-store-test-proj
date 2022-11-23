@@ -50,7 +50,7 @@ class Attributes extends PureComponent {
       const props = { ...this.state.newState };
       if (type.trim() === "text") {
         return (
-          <div className={classes.product__size} key={name}>
+          <div className={classes.product__size} key={`attributes_${name}`}>
             <div className={classes.product__size__title}>
               {name.toUpperCase()}:
             </div>
@@ -74,7 +74,7 @@ class Attributes extends PureComponent {
         );
       } else {
         return (
-          <div className={classes.product__color} key={name}>
+          <div className={classes.product__color} key={`attributes_${name}`}>
             <div className={classes.product__color__title}>
               {name.toUpperCase()}:
             </div>
@@ -87,6 +87,7 @@ class Attributes extends PureComponent {
                       props[keyVal] === item.displayValue && classes.active
                     }`}
                     style={{ backgroundColor: item.displayValue }}
+                    key={`attributes_${item.displayValue}`}
                   ></div>
                 );
               })}

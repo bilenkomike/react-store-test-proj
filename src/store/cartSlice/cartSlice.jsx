@@ -1,155 +1,161 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+console.log(JSON.parse(localStorage.getItem("cart")));
+
+const productsExistence = (product, list) => {
+  let exists = true;
+  if (!list.find((item) => item.id === product.id)) {
+    exists = false;
+    return exists;
+  } else {
+    const productsInList = list.filter((item) => item.id === product.id);
+    const nesseseryItem = productsInList.map((item) => {
+      const { attributes } = item;
+      const { attributes: prodAttrs } = product;
+      if (prodAttrs) {
+        for (const key of Object.keys(prodAttrs)) {
+          if (prodAttrs[key] !== attributes[key]) {
+            exists = false;
+            return exists;
+          }
+        }
+      }
+      return item;
+    });
+    return nesseseryItem;
+  }
+};
+
 const cartSlice = createSlice({
   name: "cart",
   initialState: {
-    items: [],
-    count: 0,
-    total: {},
+    items: localStorage.getItem("cart")
+      ? JSON.parse(localStorage.getItem("cart"))
+      : [],
+    count: localStorage.getItem("cartCount")
+      ? parseInt(localStorage.getItem("cartCount"))
+      : 0,
+    total: localStorage.getItem("total")
+      ? JSON.parse(localStorage.getItem("total"))
+      : {},
   },
   reducers: {
     addItemToCart: (state, action) => {
       const product = { ...action.payload };
-      // console.log(product);
-      // return;
       state.count += 1;
-      const exists = state.items.find((item) => item.id === product.id);
-      // console.log(!exists);
-      if (!exists) {
-        console.log("doesnt exits!!!!");
-        let attributes = {};
-        if (product.attributes) {
-          try {
-            product.attributes.map(
-              (attr) =>
-                (attributes[attr.id.toLowerCase().split(" ").join("-")] =
-                  attr.type === "text"
-                    ? attr.items[0].value
-                    : attr.items[0].displayValue)
-            );
-          } catch (e) {
-            attributes = product.attributes;
-          }
-        } else {
-          attributes = product.attributes;
-        }
 
+      const prices = [...product.prices];
+
+      prices.map((price) => {
+        if (!state.total[price.currency.symbol]) {
+          state.total[price.currency.symbol] = 0;
+        }
+        state.total[price.currency.symbol] += parseFloat(
+          price.amount.toFixed(2)
+        );
+        return state;
+      });
+      let count = 1;
+
+      let attributes = {};
+      if (action.payload.additionType === "list") {
+        // console.log(product.attributes);
+        product.attributes.map((attribute) => {
+          attributes[attribute.name.toLowerCase().split(" ").join("-")] =
+            attribute.type === "text"
+              ? attribute.items[0].value
+              : attribute.items[0].displayValue;
+          return attribute;
+        });
+      } else {
+        attributes = product.attributes;
+      }
+
+      product.attributes = attributes;
+
+      const exists = productsExistence(product, state.items);
+
+      if (!exists || !exists[0]) {
+        count = 1;
         const item = {
           id: product.id,
           attributes: attributes,
-          count: 1,
+          count: count,
           prices: product.prices,
         };
-        const prices = [...product.prices];
+        // console.log(attributes);
 
+        // console.log(item);
         state.items.push(item);
-        prices.map((price) => {
-          if (!state.total[price.currency.symbol]) {
-            state.total[price.currency.symbol] = 0;
-          }
-          state.total[price.currency.symbol] += parseFloat(
-            price.amount.toFixed(2)
-          );
-          return state;
-        });
       } else {
-        // if prod exists
-
-        const props = state.items.find(
-          (item) => item.id === product.id
-        ).attributes;
-        let equal = true;
-        console.log(product);
-        for (const key of Object.keys(props)) {
-          console.log(product.attributes);
-          console.log(product.attributes.length);
-          if (product.attributes.length) {
-            for (const attribute of product.attributes) {
-              if (attribute.name) break;
-              console.log(key, props[key], attribute);
-              if (props[key] !== attribute[key]) {
-                equal = false;
+        state.items.map((item) => {
+          // console.log(product);
+          const { attributes } = item;
+          let thisProd = true;
+          const { attributes: prodAttributes } = product;
+          if (prodAttributes) {
+            for (const key of Object.keys(prodAttributes)) {
+              if (prodAttributes[key] !== attributes[key]) {
+                thisProd = false;
               }
             }
-          } else {
-            if (props[key] !== product.attributes[key]) {
-              equal = false;
-            }
-          }
-        }
-
-        console.log(equal, "equal");
-        if (equal) {
-          state.items.find((item) => item.id === product.id).count += 1;
-          state.items
-            .find((item) => item.id === product.id)
-            .prices.map((price) => {
-              if (!state.total[price.currency.symbol]) {
-                state.total[price.currency.symbol] = 0;
-              }
-              state.total[price.currency.symbol] += parseFloat(
-                price.amount.toFixed(2)
-              );
-              return state;
-            });
-        } else {
-          let attributes = {};
-          if (product.attributes) {
-            // console.log(product.attributes);
-            try {
-              product.attributes.map(
-                (attr) =>
-                  (attributes[attr.id.toLowerCase().split(" ").join("-")] =
-                    attr.type === "text"
-                      ? attr.items[0].value
-                      : attr.items[0].displayValue)
-              );
-            } catch (e) {
-              attributes = product.attributes;
-            }
-          } else {
-            attributes = product.attributes;
           }
 
-          const item = {
-            id: product.id,
-            attributes: attributes,
-            count: 1,
-            prices: product.prices,
-          };
-          const prices = [...product.prices];
+          if (thisProd) {
+            item.count += 1;
+          }
 
-          state.items.push(item);
-          prices.map((price) => {
-            if (!state.total[price.currency.symbol]) {
-              state.total[price.currency.symbol] = 0;
-            }
-            state.total[price.currency.symbol] += parseFloat(
-              price.amount.toFixed(2)
-            );
-            return state;
-          });
-        }
+          return item;
+        });
       }
+
+      localStorage.setItem("cartCount", state.count);
+      localStorage.setItem("cart", JSON.stringify(state.items));
+      localStorage.setItem("total", JSON.stringify(state.total));
     },
     removeItemFromCart: (state, action) => {
-      const id = action.payload.id;
-      state.count -= 1;
-      state.items.find((item) => item.id === id).count -= 1;
-      state.items
-        .find((item) => item.id === id)
-        .prices.map((price) => {
-          state.total[price.currency.symbol] -=
-            Math.round(price.amount * 100) / 100;
-          return state;
-        });
-      if (state.items.find((item) => item.id === id).count <= 0) {
-        state.items = state.items.filter((item) => item.id !== id);
-      }
+      const product = { ...action.payload };
 
-      for (let obj in state.total) {
-        console.log(state.total[obj]);
-      }
+      state.count -= 1;
+      state.items.map((item) => {
+        const { attributes } = item;
+        let thisProd = true;
+
+        if (product.attributes) {
+          const { attributes: prodAttributes } = product;
+          for (const key of Object.keys(prodAttributes)) {
+            if (prodAttributes[key] !== attributes[key]) {
+              thisProd = false;
+            }
+          }
+        }
+
+        if (thisProd) {
+          item.count -= 1;
+        }
+        if (item.count > 0) {
+          return item;
+        } else {
+          state.items.filter((prod) => prod.count >= 1);
+        }
+        return state;
+      });
+
+      state.items = state.items.filter((item) => item.count > 0);
+      const prices = [...product.prices];
+
+      prices.map((price) => {
+        if (!state.total[price.currency.symbol]) {
+          state.total[price.currency.symbol] = 0;
+        }
+        state.total[price.currency.symbol] -= parseFloat(
+          price.amount.toFixed(2)
+        );
+        return state;
+      });
+      localStorage.setItem("cartCount", state.count);
+      localStorage.setItem("cart", JSON.stringify(state.items));
+      localStorage.setItem("total", JSON.stringify(state.total));
     },
 
     setTotalDefault: (state, action) => {

@@ -15,9 +15,6 @@ class MiniCart extends Component {
   };
   componentDidUpdate(prevProps) {
     if (prevProps.cart !== this.props.cart) {
-      // console.log("CARTS NOT EQUAL");
-      // console.log(this.props.cart);
-
       let ids = [];
       this.props.cart.map((item) => {
         ids.push(item.id);
@@ -25,8 +22,17 @@ class MiniCart extends Component {
       });
 
       this.props.getProductsForCart(ids);
+    }
+  }
+  componentDidMount() {
+    if (this.props.cart.length > 0) {
+      let ids = [];
+      this.props.cart.map((item) => {
+        ids.push(item.id);
+        return ids;
+      });
 
-      // console.log(this.props.productsForCart);
+      this.props.getProductsForCart(ids);
     }
   }
   render() {

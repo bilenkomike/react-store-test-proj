@@ -10,7 +10,7 @@ import { productsActions } from "../../store/productsSlice/productsSlice";
 
 class MiniCartItem extends Component {
   render() {
-    if (this.props.product) {
+    if (this.props.product && this.props.count > 0) {
       return (
         <div className={classes.mini__cart__item}>
           <div className={classes.mini__cart__item__left}>
@@ -39,7 +39,11 @@ class MiniCartItem extends Component {
               <div
                 className={classes.mini__cart__item__sign}
                 onClick={() => {
-                  this.props.addItemToCart(this.props.id);
+                  this.props.addItemToCart({
+                    id: this.props.id,
+                    attributes: this.props.attributes,
+                    prices: this.props.prices,
+                  });
                 }}
               >
                 +
@@ -50,7 +54,11 @@ class MiniCartItem extends Component {
               <div
                 className={classes.mini__cart__item__sign}
                 onClick={() => {
-                  this.props.removeItemFromCart(this.props.id);
+                  this.props.removeItemFromCart({
+                    id: this.props.id,
+                    attributes: this.props.attributes,
+                    prices: this.props.prices,
+                  });
                 }}
               >
                 -
@@ -80,10 +88,9 @@ const mapDispatchToProps = (dispatch) => {
   return {
     getProduct: (id) => dispatch(productsActions.getProduct(id)),
 
-    addItemToCart: (id, newState) =>
-      dispatch(cartActions.addItemToCart({ id })),
-    removeItemFromCart: (id) =>
-      dispatch(cartActions.removeItemFromCart({ id })),
+    addItemToCart: (product) => dispatch(cartActions.addItemToCart(product)),
+    removeItemFromCart: (product) =>
+      dispatch(cartActions.removeItemFromCart(product)),
   };
 };
 
